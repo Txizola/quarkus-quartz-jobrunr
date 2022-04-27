@@ -1,14 +1,14 @@
 package dataModels;
 
-public class Response {
+public class SendResponse {
     private String orderId;
     private Schedule schedule;
-    private Task task;
+    private HTTPTask task;
 
-    public Response() {
+    public SendResponse() {
     }
 
-    public Response(String orderId, Schedule schedule, Task task) {
+    public SendResponse(String orderId, Schedule schedule, HTTPTask task) {
         this.orderId = orderId;
         this.schedule = schedule;
         this.task = task;
@@ -30,11 +30,11 @@ public class Response {
         this.schedule = schedule;
     }
 
-    public Task getTask() {
+    public HTTPTask getTask() {
         return task;
     }
 
-    public void setTask(Task task) {
+    public void setTask(HTTPTask task) {
         this.task = task;
     }
 }

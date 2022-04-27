@@ -2,8 +2,8 @@ package dataModels;
 
 public class Delay {
     private String type;
-    private int startTime;
-    private int delay;
+    private String startTime;
+    private String delay;
 
     public String getType() {
         return type;
@@ -13,19 +13,19 @@ public class Delay {
         this.type = type;
     }
 
-    public int getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(int startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public int getDelay() {
+    public String getDelay() {
         return delay;
     }
 
-    public void setDelay(int delay) {
+    public void setDelay(String delay) {
         this.delay = delay;
     }
 }

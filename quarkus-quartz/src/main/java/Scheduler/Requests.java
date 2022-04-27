@@ -1,18 +1,23 @@
 package Scheduler;
 
-import dataModels.RequestBody;
-import dataModels.Response;
+import dataModels.Order;
+import dataModels.RequestServices;
+import dataModels.SendResponse;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.Map;
 
 @Path("/schedule")
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
 public class Requests {
+    private RequestServices requestServices = RequestServices.getInstance();
 
     @POST
-    public Response schedule(RequestBody responseRequest) {
-        return responseRequest.returnResponse();
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public SendResponse schedule(Map<String,Object> orderReceived){
+        Order orderInMemory = requestServices.setOrder(orderReceived);
+        requestServices.addOrder(orderInMemory);
+        return requestServices.getResponse(orderInMemory);
     }
 }
