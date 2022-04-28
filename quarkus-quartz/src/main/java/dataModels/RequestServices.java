@@ -1,20 +1,23 @@
 package dataModels;
 
+import Scheduler.QuartzScheduler;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 public class RequestServices {
 
     private List<Order> orderList = new ArrayList<>();
-
     private static RequestServices requestInstance = new RequestServices();
-
     public static RequestServices getInstance() {
         return requestInstance;
     }
 
-    public Order setOrder(Map<String,Object> orderReceived) {
+    public Order setOrder(Map<String,Object> orderReceived) throws ParseException {
         Order order = new Order();
         Schedule schedule = new Schedule();
         Delay delay = new Delay();
@@ -23,12 +26,12 @@ public class RequestServices {
         order.setId((String)orderReceived.get("id"));
 
         Map<String, String> scheduleReceived = (Map<String, String>) orderReceived.get("schedule");
-
         delay.setType(((String)scheduleReceived.get("type")));
-        delay.setStartTime(String.valueOf(scheduleReceived.get("startTime")));
-        delay.setDelay(String.valueOf(scheduleReceived.get("delay")));
-
-
+        //fix later (cant get int value)
+        Date dateHelper =new SimpleDateFormat("dd/MM/yyyy").parse(String.valueOf(scheduleReceived.get("startTime")));
+        delay.setStartTime(dateHelper);
+        int intHelper = Integer.valueOf(String.valueOf(scheduleReceived.get("delay")));
+        delay.setDelay(intHelper);
 
         Map<String,String> taskReceived = (Map<String, String>) orderReceived.get("task");
         httpTask.setType((String)taskReceived.get("type"));
@@ -43,6 +46,7 @@ public class RequestServices {
     }
     public String addOrder(Order orderReceived){
         orderList.add(orderReceived);
+
         return orderReceived.getId();
     }
     public SendResponse getResponse(Order orderReceived){

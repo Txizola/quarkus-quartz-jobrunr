@@ -1,9 +1,11 @@
 package dataModels;
 
+import java.util.Date;
+
 public class Delay {
     private String type;
-    private String startTime;
-    private String delay;
+    private Date startTime;
+    private Integer delay;
 
     public String getType() {
         return type;
@@ -13,19 +15,19 @@ public class Delay {
         this.type = type;
     }
 
-    public String getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 
-    public String getDelay() {
+    public Integer getDelay() {
         return delay;
     }
 
-    public void setDelay(String delay) {
+    public void setDelay(Integer delay) {
         this.delay = delay;
     }
 }
