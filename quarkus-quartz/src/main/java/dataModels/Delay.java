@@ -1,33 +1,43 @@
 package dataModels;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Delay {
-    private String type;
-    private Date startTime;
-    private Integer delay;
+import java.beans.ConstructorProperties;
 
+@JsonIgnoreProperties
+public class Delay{
+
+    @JsonProperty("type")
+    public final String type;
+
+    @JsonProperty("startTime")
+    public final Long startTime;
+
+    @JsonProperty("delay")
+    public final Integer delay;
+
+    @ConstructorProperties({"type","startTime","delay"})
+    public Delay(String type, Long startTime, Integer delay) {
+        this.type = type;
+        this.startTime = startTime;
+        this.delay = delay;
+    }
+
+    public String returnYes(){
+        return "yes";
+    }
+    @JsonGetter
     public String getType() {
         return type;
     }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public Date getStartTime() {
+    @JsonGetter
+    public Long getStartTime() {
         return startTime;
     }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
+    @JsonGetter
     public Integer getDelay() {
         return delay;
-    }
-
-    public void setDelay(Integer delay) {
-        this.delay = delay;
     }
 }
