@@ -8,7 +8,7 @@ import javax.enterprise.context.ApplicationScoped;
 public class JobClass implements Job {
 
     @Override
-    public void execute(JobExecutionContext jobExecutionContext){
+    public void execute(JobExecutionContext context){
         System.out.println("HelloWorld!");
     }
 }

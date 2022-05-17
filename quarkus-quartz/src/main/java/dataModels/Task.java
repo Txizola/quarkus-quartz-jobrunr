@@ -1,13 +1,6 @@
 package dataModels;
 
-public class Task {
-    private String type;
+public interface Task {
+    String getType();
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 }

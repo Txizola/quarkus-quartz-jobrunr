@@ -27,12 +27,10 @@ public class Order {
     public String getId() {
         return id;
     }
-
     @JsonGetter
     public Delay getDelay() {
         return schedule;
     }
-
     @JsonGetter
     public HTTPTask getTask() {
         return task;
