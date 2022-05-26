@@ -1,6 +1,9 @@
 package dataModels;
 
 public interface Schedule{
-    String getType();
+    Delay getDelay();
 
+    void setJob();
+    void setTrigger();
+    void activateScheduler();
 }

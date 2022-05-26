@@ -8,7 +8,7 @@ import java.beans.ConstructorProperties;
 import java.util.Map;
 
 @JsonIgnoreProperties({"headers"})
-public class HTTPTask implements Task{
+public class HTTPTask{
 
     @JsonProperty("type")
     private final String type;

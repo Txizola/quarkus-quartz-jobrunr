@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.beans.ConstructorProperties;
 
 @JsonIgnoreProperties
-public class Delay implements Schedule{
+public class Delay{
 
     @JsonProperty("type")
     public final String type;

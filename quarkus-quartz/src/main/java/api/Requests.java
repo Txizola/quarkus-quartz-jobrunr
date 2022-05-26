@@ -1,9 +1,10 @@
 package api;
 
 import dataModels.Order;
+import jobrunrscheduler.JobRunrScheduler;
+import org.quartz.Job;
 import org.quartz.SchedulerException;
-import scheduler.HttpRequest;
-import scheduler.QuartzScheduler;
+import quartzscheduler.QuartzScheduler;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -16,7 +17,7 @@ import java.util.Set;
 public class Requests {
 
     private QuartzScheduler quartzScheduler = QuartzScheduler.getInstance();
-    private HttpRequest httpRequest =  new HttpRequest();
+    private JobRunrScheduler jobRunrScheduler = JobRunrScheduler.getInstance();
     private Set<Order> orders = Collections.newSetFromMap(Collections.synchronizedMap(new LinkedHashMap<>()));
 
     public Requests() throws SchedulerException {
@@ -32,11 +33,21 @@ public class Requests {
     @Consumes(MediaType.APPLICATION_JSON)
     public Set<Order> add(Order order) throws SchedulerException, IOException {
         orders.add(order);
-        //set and activate the trigger on the scheduler
+        //Set the start time and delay
         quartzScheduler.setDelay(order.getDelay());
-        quartzScheduler.ActivateScheduler();
-        //set the payload to the http request
-        httpRequest.setHttpTask(order.getTask());
+        //set the payload of the order
+        quartzScheduler.setJob(order.getTask());
+        //activate the job
+        quartzScheduler.activateScheduler();
         return orders;
     }
+
+    @Path("/jobrunr")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void jobrunr() throws SchedulerException, IOException, InterruptedException {
+        jobRunrScheduler.activateScheduler();
+    }
+
 }

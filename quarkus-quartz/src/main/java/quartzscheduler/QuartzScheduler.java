@@ -1,6 +1,8 @@
-package scheduler;
+package quartzscheduler;
 
 import dataModels.Delay;
+import dataModels.HTTPTask;
+import db.JobMongoDB;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
@@ -11,15 +13,14 @@ import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
 
 public class QuartzScheduler {
+    private JobDetail job;
     private Delay delay;
     private Trigger trigger;
 
+    JobMongoDB jobMongoDB = new JobMongoDB();
     SchedulerFactory schedulerFactory = new StdSchedulerFactory();
     Scheduler scheduler;
-    //setup job
-    JobDetail job = newJob(JobClass.class)
-            .withIdentity("jobTest", "jobGroup")
-            .build();
+
 
     public QuartzScheduler() throws SchedulerException {}
 
@@ -36,23 +37,48 @@ public class QuartzScheduler {
         return quartzInstance;
     }
 
-    public void ActivateScheduler() throws SchedulerException {
-        setTrigger();
-        scheduler = schedulerFactory.getScheduler();
-        scheduler.scheduleJob(job, trigger);
-        scheduler.start();
+    public void setDelay(Delay delay) {
+        this.delay = delay;
+    }
+
+    public Delay getDelay() {
+        return delay;
+    }
+
+
+    public void setJob(HTTPTask httpTask){
+
+        String headerKey = httpTask.getHeaders().keySet().toString();
+         job = newJob(JobClassQuartz.class)
+                .withIdentity("jobTest", "jobGroupTest")
+                .usingJobData("url", httpTask.getUrl())
+                .usingJobData("method", httpTask.getMethod())
+                .usingJobData("headerKey", headerKey)
+                .usingJobData("headerValue", httpTask.getHeaders().get(headerKey))
+                .build();
+        JobDataMap jobDataMap = job.getJobDataMap();
+
     }
 
     public void setTrigger(){
         Date startTimeDate = new Date(Long.parseLong(delay.getStartTime().toString()));
         trigger = newTrigger()
-                .withIdentity("jobTrigger", "jobGroup")
+                .withIdentity("triggerTest", "triggerGroupTest")
                 .startAt(startTimeDate).withSchedule(simpleSchedule()
                         .withIntervalInSeconds(delay.getDelay())
                         .repeatForever())
                 .build();
     }
-    public void setDelay(Delay delay) {
-        this.delay = delay;
+
+    public void activateScheduler() throws SchedulerException {
+        setTrigger();
+        scheduler = schedulerFactory.getScheduler();
+        scheduler.scheduleJob(job, trigger);
+        jobMongoDB.saveJobAndTrigger(job,trigger);
+        scheduler.start();
     }
+
+
+
+
 }

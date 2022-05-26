@@ -7,18 +7,18 @@
 #
 # Then, build the image with:
 #
-# docker build -f src/main/docker/Dockerfile.jvm -t quarkus/quarkus-scheduler-quartz-jvm .
+# docker build -f src/main/docker/Dockerfile.jvm -t quarkus/quarkus-quartzscheduler-quartz-jvm .
 #
 # Then run the container using:
 #
-# docker run -i --rm -p 8080:8080 quarkus/quarkus-scheduler-quartz-jvm
+# docker run -i --rm -p 8080:8080 quarkus/quarkus-quartzscheduler-quartz-jvm
 #
 # If you want to include the debug port into your docker image
 # you will have to expose the debug port (default 5005) like this :  EXPOSE 8080 5005
 #
 # Then run the container using :
 #
-# docker run -i --rm -p 8080:8080 quarkus/quarkus-scheduler-quartz-jvm
+# docker run -i --rm -p 8080:8080 quarkus/quarkus-quartzscheduler-quartz-jvm
 #
 # This image uses the `run-java.sh` script to run the application.
 # This scripts computes the command line to execute your Java application, and
@@ -54,7 +54,7 @@
 #    true").
 # - JAVA_DEBUG_PORT: Port used for remote debugging. Defaults to 5005 (example: "8787").
 # - CONTAINER_CORE_LIMIT: A calculated core limit as described in
-#   https://www.kernel.org/doc/Documentation/scheduler/sched-bwc.txt. (example: "2")
+#   https://www.kernel.org/doc/Documentation/quartzscheduler/sched-bwc.txt. (example: "2")
 # - CONTAINER_MAX_MEMORY: Memory limit given to the container (example: "1024").
 # - GC_MIN_HEAP_FREE_RATIO: Minimum percentage of heap free after GC to avoid expansion.
 #   (example: "20")
