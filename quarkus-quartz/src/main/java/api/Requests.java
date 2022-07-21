@@ -2,7 +2,6 @@ package api;
 
 import dataModels.Order;
 import jobrunrscheduler.JobRunrScheduler;
-import org.quartz.Job;
 import org.quartz.SchedulerException;
 import quartzscheduler.QuartzScheduler;
 
@@ -19,14 +18,16 @@ import java.util.Set;
 @ApplicationScoped
 public class Requests {
 
-    private QuartzScheduler quartzScheduler = QuartzScheduler.getInstance();
+    private QuartzScheduler quartzScheduler;// = QuartzScheduler.getInstance();
     private JobRunrScheduler jobRunrScheduler;// = JobRunrScheduler.getInstance();
     private Set<Order> orders = Collections.newSetFromMap(Collections.synchronizedMap(new LinkedHashMap<>()));
 
     @Inject
-    public Requests(JobRunrScheduler jobRunrScheduler) throws SchedulerException {
+    public Requests(QuartzScheduler quartzScheduler,JobRunrScheduler jobRunrScheduler) throws SchedulerException {
+        this.quartzScheduler = quartzScheduler;
         this.jobRunrScheduler = jobRunrScheduler;
     }
+
 
     @GET
     public Set<Order> list() {

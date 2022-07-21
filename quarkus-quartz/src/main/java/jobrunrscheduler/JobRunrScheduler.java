@@ -5,12 +5,10 @@ import dataModels.HTTPTask;
 import dataModels.Schedule;
 import org.jobrunr.jobs.JobId;
 import org.jobrunr.scheduling.JobScheduler;
-import org.quartz.SchedulerException;
-import java.time.Duration;
-import java.time.Instant;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.time.Instant;
 
 @ApplicationScoped
 public class JobRunrScheduler implements Schedule {

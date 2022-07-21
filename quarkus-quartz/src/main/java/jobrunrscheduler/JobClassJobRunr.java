@@ -18,19 +18,16 @@ public class JobClassJobRunr{
 
     @Job
     public void doJob(HTTPTask httpTask){
-        System.out.println("HelloWorld!");
         String headerKey = httpTask.getHeaders().keySet().toString();
-
         String url = httpTask.getUrl();
         String method = httpTask.getMethod();
         String header = httpTask.getHeaders().keySet().toString();
         String headerValue = httpTask.getHeaders().get(headerKey);
-        System.out.println("url1: " + url);
 
         try {
             HttpRequest httpRequest = new HttpRequest();
             httpRequest.setConnection(url, method, header, headerValue);
-            System.out.println("url2: " + url);
+            System.out.println("JobRunr URL connection: " + url);
         } catch (IOException e) {
             e.printStackTrace();
         }

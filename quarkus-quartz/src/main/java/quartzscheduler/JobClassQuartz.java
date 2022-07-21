@@ -10,23 +10,19 @@ import java.io.IOException;
 
 @RequestScoped
 public class JobClassQuartz implements Job {
-    //private HttpRequest httpRequest = new HttpRequest();
 
     @Override
     public void execute(JobExecutionContext context){
-        System.out.println("HelloWorld!");
-
         JobDataMap dataMap = context.getJobDetail().getJobDataMap();
         String url = dataMap.getString("url");
         String method = dataMap.getString("method");
         String header = dataMap.getString("headerKey");
         String headerValue = dataMap.getString("headerValue");
-        System.out.println("url1: " + url);
 
         try {
             HttpRequest httpRequest = new HttpRequest();
             httpRequest.setConnection(url, method, header, headerValue);
-            System.out.println("url2: " + url);
+            System.out.println("Quartz URL connection: " + url);
         } catch (IOException e) {
             e.printStackTrace();
         }

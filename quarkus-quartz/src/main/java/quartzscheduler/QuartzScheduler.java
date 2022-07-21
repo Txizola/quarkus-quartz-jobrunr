@@ -2,16 +2,19 @@ package quartzscheduler;
 
 import dataModels.Delay;
 import dataModels.HTTPTask;
+import dataModels.Schedule;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.util.Date;
 import java.util.UUID;
 
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.TriggerBuilder.newTrigger;
 
-public class QuartzScheduler {
+@ApplicationScoped
+public class QuartzScheduler implements Schedule {
 
     SchedulerFactory schedulerFactory = new StdSchedulerFactory();
     Scheduler scheduler;
@@ -21,20 +24,6 @@ public class QuartzScheduler {
         scheduler = schedulerFactory.getScheduler();
         scheduler.start();
     }
-
-    //instance
-    private static QuartzScheduler quartzInstance;
-    static {
-        try {
-            quartzInstance = new QuartzScheduler();
-        } catch (SchedulerException e) {
-            e.printStackTrace();
-        }
-    }
-    public static QuartzScheduler getInstance() {
-        return quartzInstance;
-    }
-
 
     public void schedule(HTTPTask httpTask, Delay delay) throws SchedulerException {
         String headerKey = httpTask.getHeaders().keySet().toString();
