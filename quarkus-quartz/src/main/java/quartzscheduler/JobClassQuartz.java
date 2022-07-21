@@ -4,12 +4,13 @@ import httprequests.HttpRequest;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
-import javax.enterprise.context.ApplicationScoped;
+
+import javax.enterprise.context.RequestScoped;
 import java.io.IOException;
 
-@ApplicationScoped
+@RequestScoped
 public class JobClassQuartz implements Job {
-    private HttpRequest httpRequest = new HttpRequest();
+    //private HttpRequest httpRequest = new HttpRequest();
 
     @Override
     public void execute(JobExecutionContext context){
@@ -23,6 +24,7 @@ public class JobClassQuartz implements Job {
         System.out.println("url1: " + url);
 
         try {
+            HttpRequest httpRequest = new HttpRequest();
             httpRequest.setConnection(url, method, header, headerValue);
             System.out.println("url2: " + url);
         } catch (IOException e) {

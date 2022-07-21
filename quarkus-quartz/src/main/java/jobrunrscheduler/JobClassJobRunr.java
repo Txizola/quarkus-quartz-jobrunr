@@ -1,17 +1,40 @@
 package jobrunrscheduler;
 
+import dataModels.HTTPTask;
+import httprequests.HttpRequest;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.jobs.context.JobRunrDashboardLogger;
-//import org.jobrunr.quarkus.annotations.Recurring;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class JobClassJobRunr {
+import javax.enterprise.context.ApplicationScoped;
+import java.io.IOException;
+
+@ApplicationScoped
+public class JobClassJobRunr{
+
     private static final Logger LOGGER = new JobRunrDashboardLogger(LoggerFactory.getLogger(JobClassJobRunr.class));
 
-    //@Recurring(id = "my-recurring-job", cron = "0,30 0 0 ? * * *")
-    @Job(name = "Random Job")
-    public void doRecurringJob() {
-        System.out.println("Doing some work without arguments");
+
+    @Job
+    public void doJob(HTTPTask httpTask){
+        System.out.println("HelloWorld!");
+        String headerKey = httpTask.getHeaders().keySet().toString();
+
+        String url = httpTask.getUrl();
+        String method = httpTask.getMethod();
+        String header = httpTask.getHeaders().keySet().toString();
+        String headerValue = httpTask.getHeaders().get(headerKey);
+        System.out.println("url1: " + url);
+
+        try {
+            HttpRequest httpRequest = new HttpRequest();
+            httpRequest.setConnection(url, method, header, headerValue);
+            System.out.println("url2: " + url);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+
 }

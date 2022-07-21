@@ -6,6 +6,8 @@ import org.quartz.Job;
 import org.quartz.SchedulerException;
 import quartzscheduler.QuartzScheduler;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
@@ -14,13 +16,16 @@ import java.util.LinkedHashMap;
 import java.util.Set;
 
 @Path("/schedule")
+@ApplicationScoped
 public class Requests {
 
     private QuartzScheduler quartzScheduler = QuartzScheduler.getInstance();
-    private JobRunrScheduler jobRunrScheduler = JobRunrScheduler.getInstance();
+    private JobRunrScheduler jobRunrScheduler;// = JobRunrScheduler.getInstance();
     private Set<Order> orders = Collections.newSetFromMap(Collections.synchronizedMap(new LinkedHashMap<>()));
 
-    public Requests() throws SchedulerException {
+    @Inject
+    public Requests(JobRunrScheduler jobRunrScheduler) throws SchedulerException {
+        this.jobRunrScheduler = jobRunrScheduler;
     }
 
     @GET
@@ -33,12 +38,7 @@ public class Requests {
     @Consumes(MediaType.APPLICATION_JSON)
     public Set<Order> add(Order order) throws SchedulerException, IOException {
         orders.add(order);
-        //Set the start time and delay
-        quartzScheduler.setDelay(order.getDelay());
-        //set the payload of the order
-        quartzScheduler.setJob(order.getTask());
-        //activate the job
-        quartzScheduler.activateScheduler();
+        quartzScheduler.schedule(order.getTask(), order.getDelay());
         return orders;
     }
 
@@ -46,8 +46,10 @@ public class Requests {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public void jobrunr() throws SchedulerException, IOException, InterruptedException {
-        jobRunrScheduler.activateScheduler();
+    public Set<Order> addJobRunr(Order order) throws IOException, InterruptedException {
+        orders.add(order);
+        jobRunrScheduler.schedule(order.getTask(), order.getDelay());
+        return orders;
     }
 
 }

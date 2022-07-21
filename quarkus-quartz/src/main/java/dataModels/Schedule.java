@@ -1,9 +1,5 @@
 package dataModels;
 
 public interface Schedule{
-    Delay getDelay();
-
-    void setJob();
-    void setTrigger();
-    void activateScheduler();
+    void schedule(HTTPTask httpTask, Delay delay) throws Exception;
 }
